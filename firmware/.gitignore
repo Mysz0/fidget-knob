@@ -1,0 +1,7 @@
+.pio/
+.vscode/
+__pycache__/
+
+# Holds a bearer token that grants full control of the home, plus WiFi
+# credentials. Never commit it.
+include/config.h

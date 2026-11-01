@@ -1,0 +1,48 @@
+name: FidgetKnob
+options:
+  bundleIdPrefix: com.urbanradar
+  deploymentTarget:
+    iOS: "26.0"
+settings:
+  base:
+    DEVELOPMENT_TEAM: ""  # set your own team to run on a device
+    SWIFT_VERSION: "5.0"
+    CODE_SIGN_STYLE: Automatic
+targets:
+  FidgetKnob:
+    type: application
+    platform: iOS
+    sources: [FidgetKnob]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.urbanradar.fidgetknob
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        INFOPLIST_KEY_CFBundleDisplayName: Knob
+        INFOPLIST_KEY_NSLocalNetworkUsageDescription: "Knob finds and pairs your IKEA hub on your home network so the knob can control your lamps."
+        INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription: "Knob talks to your Fidget Knob over Bluetooth to switch its mode and send album covers."
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+        GENERATE_INFOPLIST_FILE: YES
+    info:
+      path: FidgetKnob/Info.plist
+      properties:
+        UIBackgroundModes: [bluetooth-central]
+        NSBonjourServices: [_ihsp._tcp]
+        UILaunchScreen: {}
+  FidgetKnobTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [FidgetKnobTests]
+    dependencies:
+      - target: FidgetKnob
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  FidgetKnob:
+    build:
+      targets:
+        FidgetKnob: all
+        FidgetKnobTests: [test]
+    test:
+      targets: [FidgetKnobTests]

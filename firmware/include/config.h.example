@@ -1,0 +1,68 @@
+#pragma once
+
+// Copy this file to config.h and fill it in.
+//
+//   cp include/config.h.example include/config.h
+//   python3 tools/pair.py 192.168.1.50
+//
+// pair.py walks you through pressing the hub's action button and prints the
+// token and certificate ready to paste in below. config.h is gitignored: the
+// token grants full control of your home.
+
+// ---------------------------------------------------------------- WiFi ----
+
+#define WIFI_SSID     "your-network"
+#define WIFI_PASSWORD "your-password"
+
+// ------------------------------------------------------------ DIRIGERA ----
+
+// Hub address on your LAN. Give the hub a DHCP reservation so this stays valid;
+// if the hub's address changes the knob has no way to rediscover it.
+#define DIRIGERA_HOST "192.168.1.50"
+#define DIRIGERA_PORT 8443
+
+// Long-lived bearer token from pair.py.
+#define DIRIGERA_TOKEN "paste-token-here"
+
+// The hub's self-signed certificate, from pair.py.
+//
+// Because it is self-signed it is its own issuer, so handing it to the TLS
+// stack as a trusted root pins this exact hub. That is stronger than trusting a
+// public CA, since no public CA should be able to vouch for a device on your
+// LAN in the first place.
+#define DIRIGERA_CERT_PEM \
+  "-----BEGIN CERTIFICATE-----\n" \
+  "paste-certificate-here\n" \
+  "-----END CERTIFICATE-----\n"
+
+// Uncomment ONLY for first bring-up. This skips certificate validation
+// entirely, so anything on the LAN can impersonate the hub. Confirm the wiring
+// and token work, then comment it out again and paste the real certificate.
+// #define DIRIGERA_INSECURE
+
+// ------------------------------------------------------------- Tuning ----
+
+// Degrees of twist per step. Lower = finer control. The haptic click comes
+// every 5% of the range (see kHapticClickFraction in app.cpp), not per step.
+#define TWIST_DEGREES_PER_DETENT 1.0f
+
+// Detents needed to sweep a value from 0 to 100%.
+#define DETENTS_FULL_SCALE 540  // 1.5 turns at 1 degree per step.
+
+// Milliseconds the button must be held before the target picker opens.
+#define BUTTON_HOLD_MS 600
+
+// Stillness this long dims the screen; twice this long turns it off.
+#define IDLE_DIM_MS 6000
+
+// Stillness this long drops to deep sleep.
+//
+// This was 30 minutes when the plan was to idle cheaply in light sleep. The
+// stock Arduino core cannot do that (see src/net/wifi_fast.h), so an awake
+// device costs ~25 mA and a long window is expensive: 30 minutes of awake time
+// per interaction would flatten a 400 mAh cell in a day.
+//
+// Two minutes covers a normal burst of fiddling, and the fast-reconnect path
+// makes waking from sleep cost ~300-600 ms rather than the ~2 s that made deep
+// sleep unattractive in the first place.
+#define IDLE_DEEP_SLEEP_MS 120000  // 2 minutes.

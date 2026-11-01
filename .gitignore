@@ -1,0 +1,32 @@
+.DS_Store
+
+# Secrets: WiFi password and the hub token live here
+firmware/include/config.h
+
+# PlatformIO
+.pio/
+.vscode/
+
+# Python
+__pycache__/
+.venv/
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+ios/build/
+DerivedData/
+
+# Case source and printable models are withheld from this release.
+/enclosure/
+*.stl
+*.scad
+*.step
+*.stp
+*.3mf
+*.gcode
+*.f3d
+*.f3z
+
+# Local gesture captures; users can record their own.
+firmware/tools/recordings/
